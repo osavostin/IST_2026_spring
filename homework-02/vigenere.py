@@ -10,23 +10,14 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     'LXFOPVEFRNHR'
     """
     ciphertext = ""
-    keyword_repeated = ""
-    
-    # Repeat the keyword to match the length of the plaintext
-    while len(keyword_repeated) < len(plaintext):
-        keyword_repeated += keyword
-    
-    for i, char in enumerate(plaintext):
+    for i in range(len(plaintext)):
+        char = plaintext[i]
+        shift = ord(keyword[i % len(keyword)].upper()) - ord("A")
         if char.isalpha():
-            if char.isupper():
-                shift = ord(keyword_repeated[i].upper()) - ord('A')
-                ciphertext += chr((ord(char) - ord('A') + shift) % 26 + ord('A'))
-            else:
-                shift = ord(keyword_repeated[i].lower()) - ord('a')
-                ciphertext += chr((ord(char) - ord('a') + shift) % 26 + ord('a'))
+            start = ord("A") if char.isupper() else ord("a")
+            ciphertext += chr(start + (ord(char) - start + shift) % 26)
         else:
             ciphertext += char
-    
     return ciphertext
 
 
@@ -42,21 +33,12 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     'ATTACKATDAWN'
     """
     plaintext = ""
-    keyword_repeated = ""
-    
-    # Repeat the keyword to match the length of the ciphertext
-    while len(keyword_repeated) < len(ciphertext):
-        keyword_repeated += keyword
-    
-    for i, char in enumerate(ciphertext):
+    for i in range(len(ciphertext)):
+        char = ciphertext[i]
+        shift = ord(keyword[i % len(keyword)].upper()) - ord("A")
         if char.isalpha():
-            if char.isupper():
-                shift = ord(keyword_repeated[i].upper()) - ord('A')
-                plaintext += chr((ord(char) - ord('A') - shift) % 26 + ord('A'))
-            else:
-                shift = ord(keyword_repeated[i].lower()) - ord('a')
-                plaintext += chr((ord(char) - ord('a') - shift) % 26 + ord('a'))
+            start = ord("A") if char.isupper() else ord("a")
+            plaintext += chr(start + (ord(char) - start - shift) % 26)
         else:
             plaintext += char
-    
     return plaintext
