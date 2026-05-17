@@ -114,7 +114,6 @@ class LogRegL2Oracle(BaseSmoothOracle):
 
         if scipy.sparse.issparse(H):
             I_reg = scipy.sparse.diags([self.regcoef], [0], shape=(x.size, x.size))
-            # Converted to dense array here to pass the `isinstance(..., np.ndarray)` check
             return (H + I_reg).toarray()
         else:
             return H + self.regcoef * np.eye(x.size)
